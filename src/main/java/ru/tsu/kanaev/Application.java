@@ -42,7 +42,7 @@ public class Application {
         File file = new File(sourceFilePath);
 
         if (!file.exists() || !file.canRead()) {
-            throw new FileNotFoundException("Cannot found or read the file");
+            throw new FileNotFoundException("Cannot find or read the source file");
         }
 
         return FileUtils.readFileToByteArray(file);
