@@ -4,6 +4,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
+import java.util.Scanner;
 
 import static ru.tsu.kanaev.Action.DECRYPT;
 import static ru.tsu.kanaev.Action.ENCRYPT;
@@ -19,8 +20,9 @@ public class Application {
     public static void main(String[] args) throws IOException {
         initKey("Some simple key for testing encryption");
 
-        String action = args[0];
-        String sourceFilePath = args[1];
+        printApplicationInfo();
+        String action = getAction();
+        String sourceFilePath = getFilePath();
 
         if (StringUtils.isEmpty(sourceFilePath)) {
             throw new IllegalArgumentException("The path of the source file must not be empty");
@@ -34,6 +36,8 @@ public class Application {
         } else if (action.equalsIgnoreCase(DECRYPT.toString())) {
             byte[] decrypted = decrypt(payload);
             save(decrypted, "decrypted.txt");
+        } else {
+            throw new IllegalArgumentException("Action can be either \"encrypt\" or \"decrypt\"");
         }
     }
 
@@ -172,5 +176,52 @@ public class Application {
             buf[i+1] = v1;
             i+=2;
         }
+    }
+
+
+    private static String getAction() {
+        System.out.println("Specify the action. Possible variants: encrypt, encrypt.");
+        System.out.print("Action: ");
+
+        return scanArgument();
+    }
+
+
+    private static String getFilePath() {
+        System.out.println("Specify the path to the source file.");
+        System.out.print("Path: ");
+
+        return scanArgument();
+    }
+
+    private static String scanArgument() {
+        Scanner scanner = new Scanner(System.in);
+        String arg = "";
+        if (scanner.hasNextLine()) {
+            arg = scanner.nextLine();
+        }
+
+        return StringUtils.trim(arg);
+    }
+
+
+    private static void printApplicationInfo() {
+        printBanner();
+        System.out.println("Welcome to the TEA encryptor application!");
+        System.out.println("The result of the application work will be stored to the user's home root");
+        System.out.println("encrypted.txt is the result of the encryption action.");
+        System.out.println("decrypted.txt is the result of the decryption action.");
+    }
+
+    private static void printBanner() {
+        System.out.println("  _______ ______            ______                             _             \n" +
+                " |__   __|  ____|   /\\     |  ____|                           | |            \n" +
+                "    | |  | |__     /  \\    | |__   _ __   ___ _ __ _   _ _ __ | |_ ___  _ __ \n" +
+                "    | |  |  __|   / /\\ \\   |  __| | '_ \\ / __| '__| | | | '_ \\| __/ _ \\| '__|\n" +
+                "    | |  | |____ / ____ \\  | |____| | | | (__| |  | |_| | |_) | || (_) | |   \n" +
+                "    |_|  |______/_/    \\_\\ |______|_| |_|\\___|_|   \\__, | .__/ \\__\\___/|_|   \n" +
+                "                                                    __/ | |                  \n" +
+                "                                                   |___/|_|                 ");
+        System.out.println();
     }
 }
