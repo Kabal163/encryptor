@@ -180,7 +180,7 @@ public class Application {
 
 
     private static String getAction() {
-        System.out.println("Specify the action. Possible variants: encrypt, encrypt.");
+        System.out.println("Specify the action. Possible variants: encrypt, decrypt.");
         System.out.print("Action: ");
 
         return scanArgument();
